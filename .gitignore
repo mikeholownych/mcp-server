@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+.mypy_cache/
+n8n_data/
+dist/
+build/
