@@ -1,3 +1,2 @@
-# Add any initial Python requirements here for FastAPI and testing
 fastapi
-pytest
+uvicorn
