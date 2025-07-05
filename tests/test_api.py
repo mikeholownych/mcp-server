@@ -18,9 +18,22 @@ def test_token_count():
     assert data.get("model") == "gpt-4"
 
 def test_process_content():
-    payload = {"text": "Test content", "platform": "LinkedIn"}
+    payload = {
+        "text": "Test content",
+        "platform": "LinkedIn",
+        "pillar": "AI Risk"   # <- Add required field
+    }
     response = client.post("/api/process", json=payload)
     assert response.status_code == 200
     data = response.json()
     assert "formatted" in data and "safe" in data and "headlines" in data
     assert isinstance(data["headlines"], list)
+
+def test_process_content_missing_fields():
+    payload = {
+        "text": "Test content",
+        "platform": "LinkedIn"
+        # Missing "pillar"
+    }
+    response = client.post("/api/process", json=payload)
+    assert response.status_code == 422  # Should fail validation

@@ -3,3 +3,5 @@ uvicorn[standard]>=0.23.0
 openai>=1.0.0
 python-dotenv>=1.0.0
 tiktoken>=0.5.1
+PyGithub
+gitpython

@@ -33,12 +33,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "text":     { "type": "string" },
-                  "platform": { "type": "string" },
-                  "pillar":   { "type": "string" },
-                  "name":     { "type": "string" },
-                  "brand":    { "type": "string", "default": "Ethical AI Insider" },
-                  "context":  { "type": "string" }
+                  "text":     { "type": "string", "description": "Source content/idea to process" },
+                  "platform": { "type": "string", "description": "Target platform (LinkedIn, ConvertKit, Medium, WordPress)" },
+                  "pillar":   { "type": "string", "description": "Strategic content pillar (e.g., AI Risk, Compliance, Governance, etc.)" },
+                  "name":     { "type": "string", "description": "Internal draft name (optional)" },
+                  "brand":    { "type": "string", "description": "Brand context (defaults to 'Ethical AI Insider')", "default": "Ethical AI Insider" },
+                  "context":  { "type": "string", "description": "Additional business or topical context (optional)" }
                 },
                 "required": ["text", "platform", "pillar"]
               }
@@ -53,18 +53,19 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "formatted":       { "type": "string" },
-                    "safe":            { "type": "string" },
+                    "formatted":       { "type": "string", "description": "Platform-formatted post content" },
+                    "safe":            { "type": "string", "description": "Safety/compliance-checked version" },
                     "headlines": {
                       "type": "array",
+                      "description": "Array of headline/title options",
                       "items": { "type": "string" }
                     },
-                    "platform":        { "type": "string" },
-                    "pillar":          { "type": "string" },
-                    "brand":           { "type": "string" },
-                    "brandCompliance": { "type": "string" },
-                    "name":            { "type": "string" },
-                    "context":         { "type": "string" }
+                    "platform":        { "type": "string", "description": "Target platform" },
+                    "pillar":          { "type": "string", "description": "Strategic pillar used" },
+                    "brand":           { "type": "string", "description": "Brand context" },
+                    "brandCompliance": { "type": "string", "description": "Brand compliance check: rationale or result" },
+                    "name":            { "type": "string", "description": "Draft name" },
+                    "context":         { "type": "string", "description": "Business/topical context (optional)" }
                   }
                 }
               }

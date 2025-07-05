@@ -5,3 +5,5 @@ __pycache__/
 n8n_data/
 dist/
 build/
+enhancements.json
+/tmp/mcp-git-tmp/
