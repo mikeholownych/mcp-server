@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/mikeholownych/mcp-server/compare/v1.2.1...v1.2.2) (2025-07-05)
+
+
+### Bug Fixes
+
+* **ci:** update GHCR authentication token for Docker image push ([1af005e](https://github.com/mikeholownych/mcp-server/commit/1af005e6e31fb2053a11f32a13420e6bf0152ad6))
+
 # [1.2.0](https://github.com/mikeholownych/mcp-server/compare/v1.1.0...v1.2.0) (2025-07-05)
 
 
