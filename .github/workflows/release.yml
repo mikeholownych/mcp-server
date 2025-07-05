@@ -1,20 +1,29 @@
 name: Release
 
+# Run on every push to main
 on:
   push:
     branches:
       - main
 
+# Grant the minimum scopes for tagging, releases & packages
+permissions:
+  contents: write    # allow pushing commits & tags
+  packages: write    # allow publishing packages (if used)
+  pull-requests: write
+  issues: write      # for @semantic-release/github
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-          persist-credentials: true
+          fetch-depth: 0         # <-- fetch all tags
+          persist-credentials: true  # <-- allow GITHUB_TOKEN to persist
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -23,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Semantic Release
+      - name: Semantic Release 🚀
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
