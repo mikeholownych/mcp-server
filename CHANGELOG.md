@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/mikeholownych/mcp-server/compare/v1.2.3...v1.3.0) (2025-07-05)
+
+
+### Bug Fixes
+
+* attempting to fix merge to main in CI ([03c36aa](https://github.com/mikeholownych/mcp-server/commit/03c36aa8c5d360c3e8f12a87196789811174ef93))
+
+
+### Features
+
+* Enable MCP-server automated code development orchestration and brand-aligned content ([d1859bd](https://github.com/mikeholownych/mcp-server/commit/d1859bd9fd2c89350bd0bf93b6ca0bada04a6072))
+
 ## [1.2.2](https://github.com/mikeholownych/mcp-server/compare/v1.2.1...v1.2.2) (2025-07-05)
 
 
