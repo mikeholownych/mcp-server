@@ -1,4 +1,5 @@
 # Dockerfile to containerize the FastAPI application
+
 FROM python:3.9
 
 WORKDIR /app
