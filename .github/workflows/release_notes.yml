@@ -1,0 +1,44 @@
+name: Generate Release Notes and Changelog
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          previous_tag=$(git describe --tags --abbrev=0 HEAD^)
+          current_tag=$(git describe --tags --abbrev=0)
+          echo "Fetching changes from $previous_tag to $current_tag"
+          git log $previous_tag..HEAD --oneline > CHANGELOG.md
+          echo "Generated changelog for $current_tag"
+        
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+      
+      - name: Commit Changelog
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md for ${{ github.ref_name }}"
+          git push
