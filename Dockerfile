@@ -27,3 +27,10 @@ ENV PYTHONUNBUFFERED=1
 
 # Entrypoint
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5005"]
+
+# Wait for the server to be up (add a sleep or health check here)
+RUN sleep 15
+
+# Auto-generate and launch all enhancements
+RUN curl -X POST http://localhost:5005/api/autogen-enhancements -H "x-mcp-secret: N8NSuperSecret" -H "Content-Type: application/json" -d '{"code_dir": "/app"}'
+python3 run_all_enhancements.py
