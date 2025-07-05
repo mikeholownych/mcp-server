@@ -1,47 +1,61 @@
-from fastapi import FastAPI, HTTPException, Request
-import os
-import httpx
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-NOTION_API_URL = "https://api.notion.com/v1/pages"
-AIRTABLE_API_URL = "https://api.airtable.com/v0/appId/Table"
-NOTION_API_TOKEN = os.getenv("NOTION_API_TOKEN")
-AIRTABLE_API_TOKEN = os.getenv("AIRTABLE_API_TOKEN")
+enhancement_status_log = []
 
-headers_notion = {
-    "Authorization": f"Bearer {NOTION_API_TOKEN}",
-    "Content-Type": "application/json",
-    "Notion-Version": "2021-05-13"
-}
-
-headers_airtable = {
-    "Authorization": f"Bearer {AIRTABLE_API_TOKEN}",
-    "Content-Type": "application/json"
-}
-
-@app.post("/api/webhook/notion")
-async def webhook_notion(request: Request):
-    if not NOTION_API_TOKEN:
-        raise HTTPException(status_code=500, detail="Notion API token not configured.")
+@app.post("/api/enhancement-rollback")
+def enhancement_rollback(enhancement_id: int):
+    # Attempt to rollback the enhancement
     try:
-        data = await request.json()
-        async with httpx.AsyncClient() as client:
-            response = await client.post(NOTION_API_URL, headers=headers_notion, json=data)
-            response.raise_for_status()
-        return {"message": "Notion updated successfully", "status": response.status_code}
+        # Placeholder for logic to check enhancement status
+        enhancement_status = check_enhancement_status(enhancement_id)
+        if enhancement_status != "failed":
+            raise HTTPException(status_code=400, detail="Enhancement has not failed.")
+
+        # Logic to revert to last stable main
+        revert_success = revert_to_last_stable_main()
+
+        if not revert_success:
+            raise HTTPException(status_code=500, detail="Failed to revert to last stable main.")
+
+        # Logic to redeploy
+        redeploy_success = redeploy_application()
+        if not redeploy_success:
+            raise HTTPException(status_code=500, detail="Failed to redeploy application.")
+
+        # Update log
+        log_enhancement_status(enhancement_id, "rollback successful")
+
+        return {"message": "Enhancement rollback successful."}
+
     except Exception as e:
+        # Log error
+        log_enhancement_status(enhancement_id, str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/webhook/airtable")
-async def webhook_airtable(request: Request):
-    if not AIRTABLE_API_TOKEN:
-        raise HTTPException(status_code=500, detail="Airtable API token not configured.")
-    try:
-        data = await request.json()
-        async with httpx.AsyncClient() as client:
-            response = await client.post(AIRTABLE_API_URL, headers=headers_airtable, json=data)
-            response.raise_for_status()
-        return {"message": "Airtable updated successfully", "status": response.status_code}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+
+def check_enhancement_status(enhancement_id):
+    # Placeholder: Simulate checking the enhancement status
+    # In real implementation, fetch the exact enhancement status
+    return "failed"
+
+
+def revert_to_last_stable_main():
+    # Placeholder: Implement the logic to revert to the last stable main branch
+    # Here, simply returning True to simulate success
+    return True
+
+
+def redeploy_application():
+    # Placeholder: Implement the redeployment logic
+    # Here, simply returning True to simulate success
+    return True
+
+
+def log_enhancement_status(enhancement_id, status_message):
+    # Append the status message to the log
+    enhancement_status_log.append({
+        "enhancement_id": enhancement_id,
+        "status": status_message
+    })
