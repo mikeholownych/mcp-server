@@ -4,6 +4,7 @@
 ### Bug Fixes
 
 * **enhancement-agent:** robustify git repo cloning—auto-remove and reclone if not a valid git repository ([5ab882e](https://github.com/mikeholownych/mcp-server/commit/5ab882e5209311fdf128931d5f83f97df971c0c5))
+
 * update imports after moving text utilities to app/utils/text.py ([c7cb28e](https://github.com/mikeholownych/mcp-server/commit/c7cb28e93cf55de4333fb51dddaca007bf226f9f))
 
 ## [1.3.1](https://github.com/mikeholownych/mcp-server/compare/v1.3.0...v1.3.1) (2025-07-05)
