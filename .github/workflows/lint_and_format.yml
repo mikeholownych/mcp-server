@@ -1,0 +1,42 @@
+name: Lint and Format
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [enhancement/*]
+
+jobs:
+  lint_and_format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black ruff
+
+    - name: Run Black
+      run: black .
+
+    - name: Run Ruff
+      run: ruff check --fix .
+
+    - name: Commit changes if any
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git checkout -b auto-formatting
+        git add .
+        git commit -m 'Automated linting and formatting by Black and Ruff'
+        git push origin auto-formatting
+        echo 'Changes were made by linting and formatting.'
+      if: |
+        git status --porcelain | wc -l > 0
