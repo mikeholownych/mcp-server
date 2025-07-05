@@ -4,7 +4,7 @@ import os
 import tempfile
 import shutil
 from github import Github, GithubException
-from git import Repo, GitCommandError  # pip install gitpython
+from git import Repo, InvalidGitRepositoryError, GitCommandError  # pip install gitpython
 import logging
 
 # --- CONFIGURATION ---
@@ -34,16 +34,17 @@ def _check_env():
             raise EnvironmentError(f"Required env var {k} is missing!")
 
 def clone_or_pull_repo():
-    _check_env()
-    repo_url = f"https://{GITHUB_TOKEN}@github.com/{GITHUB_REPO}.git"
+    CLONE_PATH = "/tmp/mcp-git"
+    REPO_URL = f"https://github.com/{os.getenv('BOT_GH_REPO')}.git"
     if os.path.exists(CLONE_PATH):
-        repo = Repo(CLONE_PATH)
-        logger.info("Pulling latest origin/main...")
-        repo.remotes.origin.pull()
-    else:
-        logger.info(f"Cloning {GITHUB_REPO} to {CLONE_PATH} ...")
-        Repo.clone_from(repo_url, CLONE_PATH)
-    return CLONE_PATH
+        try:
+            repo = Repo(CLONE_PATH)
+            repo.remotes.origin.pull()
+            return
+        except InvalidGitRepositoryError:
+            shutil.rmtree(CLONE_PATH)  # Remove broken repo
+    # Clone fresh
+    Repo.clone_from(REPO_URL, CLONE_PATH)
 
 def safe_branch_name(summary):
     # Lowercase, dash, 32 chars for slug, and "feature/" prefix
