@@ -1,0 +1,50 @@
+name: Auto Dev Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        pip install -r requirements.txt
+    - name: Run tests
+      run: |
+        pytest
+
+  pr_gate:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create Pull Request
+      if: success()
+      uses: actions/github-script@v3
+      with:
+        script: |
+          const prTitle = 'Run all unit tests before PR in auto-dev workflow';
+          const prBody = 'This PR ensures all unit tests are executed before code commits are finalized. Tests have passed successfully.';
+          github.pulls.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: prTitle,
+            body: prBody,
+            head: context.ref,
+            base: 'main'
+          });
+    - name: Log failure if tests do not pass
+      if: failure()
+      run: |
+        echo 'Tests have failed. PR creation is blocked until tests pass successfully.'
