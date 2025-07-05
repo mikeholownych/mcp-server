@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/mikeholownych/mcp-server/compare/v1.3.3...v1.3.4) (2025-07-05)
+
+
+### Bug Fixes
+
+* **github:** ensure clone_or_pull_repo initializes a valid git repo for agent ops ([808ac58](https://github.com/mikeholownych/mcp-server/commit/808ac58d1dcfae23b3fdd46ab39e57a6bfcf66e8))
+
 ## [1.3.3](https://github.com/mikeholownych/mcp-server/compare/v1.3.2...v1.3.3) (2025-07-05)
 
 
