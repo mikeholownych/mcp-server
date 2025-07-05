@@ -1,0 +1,60 @@
+name: Enhancement Lint and Format
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - 'enhancement/*'
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black ruff
+
+    - name: Format code with Black
+      run: |
+        black .
+      continue-on-error: true
+
+    - name: Run lint checks with Ruff
+      run: |
+        ruff . --fix
+      continue-on-error: true
+
+    - name: Commit changes
+      if: ${{ steps.format.outputs.changed }} || ${{ steps.lint.outputs.changed }}
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Apply formatting and linting fixes"
+        git push
+
+    - name: Post PR comment with logs
+      if: ${{ failure() }}
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        header: Linting and Formatting Report
+        findAndReplace: false
+        hide: true
+        message: |
+          ## Linting and Formatting Actions
+          The following actions have been automatically applied to this PR:
+          * Code formatted using **Black**.
+          * Lint issues fixed using **Ruff**.
+
+          Please review the changes and ensure your code meets the project's standards.

@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build: .
+    environment:
+      - SLACK_WEBHOOK_URL
+    ... # other configurations

@@ -1,12 +1,6 @@
-FROM python:3.11-slim
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl && \
-    rm -rf /var/lib/apt/lists/*
-
-# Set working directory
+FROM python:3.9
 WORKDIR /app
+<<<<<<< HEAD
 
 # Copy application code and requirements
 COPY ./app /app/app
@@ -34,3 +28,8 @@ RUN sleep 15
 # Auto-generate and launch all enhancements
 RUN curl -X POST http://localhost:5005/api/autogen-enhancements -H "x-mcp-secret: N8NSuperSecret" -H "Content-Type: application/json" -d '{"code_dir": "/app"}'
 python3 run_all_enhancements.py
+=======
+COPY . /app
+RUN pip install fastapi uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+>>>>>>> fix/Dockerfile
