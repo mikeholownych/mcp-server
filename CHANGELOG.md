@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/mikeholownych/mcp-server/compare/v1.3.1...v1.3.2) (2025-07-05)
+
+
+### Bug Fixes
+
+* update imports after moving text utilities to app/utils/text.py ([c7cb28e](https://github.com/mikeholownych/mcp-server/commit/c7cb28e93cf55de4333fb51dddaca007bf226f9f))
+
 ## [1.3.1](https://github.com/mikeholownych/mcp-server/compare/v1.3.0...v1.3.1) (2025-07-05)
 
 
