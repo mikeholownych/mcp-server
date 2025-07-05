@@ -1,17 +1,47 @@
-from fastapi import FastAPI
-from app.routes.api import router
+from fastapi import FastAPI, HTTPException, Request
+import os
+import httpx
 
-app = FastAPI(
-    title="MCP Content Processor",
-    description="Ethical AI Insider - Platform & Pillar Optimized Content Engine",
-    version="1.1.0"
-)
+app = FastAPI()
 
-app.include_router(router, prefix="/api")
+NOTION_API_URL = "https://api.notion.com/v1/pages"
+AIRTABLE_API_URL = "https://api.airtable.com/v0/appId/Table"
+NOTION_API_TOKEN = os.getenv("NOTION_API_TOKEN")
+AIRTABLE_API_TOKEN = os.getenv("AIRTABLE_API_TOKEN")
 
-@app.get("/", tags=["Health"])
-def health_check():
-    """
-    Health check endpoint for uptime monitoring.
-    """
-    return {"status": "ok"}
+headers_notion = {
+    "Authorization": f"Bearer {NOTION_API_TOKEN}",
+    "Content-Type": "application/json",
+    "Notion-Version": "2021-05-13"
+}
+
+headers_airtable = {
+    "Authorization": f"Bearer {AIRTABLE_API_TOKEN}",
+    "Content-Type": "application/json"
+}
+
+@app.post("/api/webhook/notion")
+async def webhook_notion(request: Request):
+    if not NOTION_API_TOKEN:
+        raise HTTPException(status_code=500, detail="Notion API token not configured.")
+    try:
+        data = await request.json()
+        async with httpx.AsyncClient() as client:
+            response = await client.post(NOTION_API_URL, headers=headers_notion, json=data)
+            response.raise_for_status()
+        return {"message": "Notion updated successfully", "status": response.status_code}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/webhook/airtable")
+async def webhook_airtable(request: Request):
+    if not AIRTABLE_API_TOKEN:
+        raise HTTPException(status_code=500, detail="Airtable API token not configured.")
+    try:
+        data = await request.json()
+        async with httpx.AsyncClient() as client:
+            response = await client.post(AIRTABLE_API_URL, headers=headers_airtable, json=data)
+            response.raise_for_status()
+        return {"message": "Airtable updated successfully", "status": response.status_code}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
