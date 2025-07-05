@@ -1,0 +1,49 @@
+name: Dependency Security Check
+
+on:
+  pull_request:
+    branches:
+      - enhancement
+
+jobs:
+  security_check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        if [[ -f requirements.txt ]]; then
+          pip install -r requirements.txt
+        elif [[ -f pyproject.toml ]]; then
+          pip install poetry
+          poetry install
+        fi
+
+    - name: Run pip-audit
+      id: pip_audit
+      run: |
+        pip install pip-audit
+        pip-audit --output pip_audit_output.txt || true
+
+    - name: Check audit results
+      run: |
+        if grep -q . pip_audit_output.txt; then
+          echo "Vulnerabilities found. Failing the job."
+          exit 1
+        else
+          echo "No vulnerabilities found."
+        fi
+
+    - name: Output audit results
+      if: failure()
+      run: |
+        echo "<summary>Found vulnerabilities</summary>" >> $GITHUB_ENV
+        cat pip_audit_output.txt >> $GITHUB_ENV
