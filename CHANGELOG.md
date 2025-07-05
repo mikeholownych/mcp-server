@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/mikeholownych/mcp-server/compare/v1.3.0...v1.3.1) (2025-07-05)
+
+
+### Bug Fixes
+
+* **ci:** Improve main branch protection to allow PR/web merges, block direct pushes ([5bc7eb3](https://github.com/mikeholownych/mcp-server/commit/5bc7eb3393e33fe63feb263c25211bdef075db9f))
+
 # [1.3.0](https://github.com/mikeholownych/mcp-server/compare/v1.2.3...v1.3.0) (2025-07-05)
 
 
