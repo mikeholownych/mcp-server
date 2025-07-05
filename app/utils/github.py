@@ -34,17 +34,25 @@ def _check_env():
             raise EnvironmentError(f"Required env var {k} is missing!")
 
 def clone_or_pull_repo():
-    CLONE_PATH = "/tmp/mcp-git"
-    REPO_URL = f"https://github.com/{os.getenv('BOT_GH_REPO')}.git"
+    # Use your actual values
+    REPO_URL = "https://github.com/mikeholownych/mcp-server.git"
+    CLONE_PATH = "/tmp/mcp-git-fkp_6mw6"
+
+    # If path exists but is not a repo, delete it first (optional safety)
     if os.path.exists(CLONE_PATH):
         try:
-            repo = Repo(CLONE_PATH)
-            repo.remotes.origin.pull()
-            return
+            _ = Repo(CLONE_PATH)
         except InvalidGitRepositoryError:
-            shutil.rmtree(CLONE_PATH)  # Remove broken repo
-    # Clone fresh
-    Repo.clone_from(REPO_URL, CLONE_PATH)
+            import shutil
+            shutil.rmtree(CLONE_PATH)
+            # Re-clone below
+
+    if not os.path.exists(CLONE_PATH):
+        Repo.clone_from(REPO_URL, CLONE_PATH)
+    else:
+        # Already a valid repo, pull
+        repo = Repo(CLONE_PATH)
+        repo.remotes.origin.pull()
 
 def safe_branch_name(summary):
     # Lowercase, dash, 32 chars for slug, and "feature/" prefix
