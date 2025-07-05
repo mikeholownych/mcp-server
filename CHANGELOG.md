@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/mikeholownych/mcp-server/compare/v1.1.0...v1.2.0) (2025-07-05)
+
+
+### Features
+
+* align MCP server with brand, pillar, and platform best practices ([b8a48e5](https://github.com/mikeholownych/mcp-server/commit/b8a48e539a9caf73c6588e4d514928937b833a95))
+
 # [1.1.0](https://github.com/mikeholownych/mcp-server/compare/v1.0.0...v1.1.0) (2025-07-05)
 
 
