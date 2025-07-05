@@ -1,5 +1,5 @@
-fastapi
-uvicorn
-openai
-python-dotenv
-tiktoken
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+openai>=1.0.0
+python-dotenv>=1.0.0
+tiktoken>=0.5.1

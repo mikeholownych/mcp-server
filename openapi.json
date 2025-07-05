@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "MCP Content Processor",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "paths": {
     "/": {
@@ -33,10 +33,14 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "text": { "type": "string" },
-                  "platform": { "type": "string" }
+                  "text":     { "type": "string" },
+                  "platform": { "type": "string" },
+                  "pillar":   { "type": "string" },
+                  "name":     { "type": "string" },
+                  "brand":    { "type": "string", "default": "Ethical AI Insider" },
+                  "context":  { "type": "string" }
                 },
-                "required": ["text"]
+                "required": ["text", "platform", "pillar"]
               }
             }
           }
@@ -49,12 +53,18 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "formatted": { "type": "string" },
-                    "safe": { "type": "string" },
-                    "headlines": { 
+                    "formatted":       { "type": "string" },
+                    "safe":            { "type": "string" },
+                    "headlines": {
                       "type": "array",
                       "items": { "type": "string" }
-                    }
+                    },
+                    "platform":        { "type": "string" },
+                    "pillar":          { "type": "string" },
+                    "brand":           { "type": "string" },
+                    "brandCompliance": { "type": "string" },
+                    "name":            { "type": "string" },
+                    "context":         { "type": "string" }
                   }
                 }
               }

@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from app.routes.api import router
 
-app = FastAPI(title="MCP Content Processor")
-app.include_router(router, prefix="/api")
+app = FastAPI(
+    title="MCP Content Processor",
+    description="Ethical AI Insider - Platform & Pillar Optimized Content Engine"
+)
 
-@app.get("/")
-def health_check():
-    return {"status": "ok"}
+app.include_router(router, prefix="/api")
