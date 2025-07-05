@@ -1,0 +1,11 @@
+name: Block direct push to main
+on:
+  push:
+    branches: [main]
+jobs:
+  block-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if not PR
+        run: |
+          echo "Direct push to main is not allowed. Please use Pull Requests." && exit 1
