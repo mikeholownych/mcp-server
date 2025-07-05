@@ -1,10 +1,11 @@
+# Dockerfile to containerize the FastAPI application
+
 FROM python:3.9
 
 WORKDIR /app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . /app
 
-COPY . .
+RUN pip install --no-cache-dir fastapi uvicorn pydantic
 
-CMD [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "mcp_server.enhancement_approval:app", "--host", "0.0.0.0", "--port", "80"]
