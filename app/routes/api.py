@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from openai import OpenAI
 
 from app.agents import headline, compliance, formatter
-from app.utils import clean_text, log_request, estimate_tokens
+from app.utils.text import clean_text, log_request, estimate_tokens
 from app.utils import github
 
 # Setup logger

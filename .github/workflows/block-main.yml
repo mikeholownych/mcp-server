@@ -1,11 +1,20 @@
 name: Block direct push to main
+
 on:
   push:
     branches: [main]
+
 jobs:
-  block-push:
+  block-direct-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail if not PR
+      - name: Cancel if commit is from a Pull Request Merge or web-flow
+        if: startsWith(github.event.head_commit.message, 'Merge pull request') || github.actor == 'web-flow'
         run: |
-          echo "Direct push to main is not allowed. Please use Pull Requests." && exit 1
+          echo "This push was from a PR merge or by web-flow. Exiting block."
+          exit 0
+
+      - name: Block direct pushes to main
+        run: |
+          echo "Direct push to main is not allowed. Please use Pull Requests."
+          exit 1
