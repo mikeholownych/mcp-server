@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/mikeholownych/mcp-server/compare/v1.3.2...v1.3.3) (2025-07-05)
+
+
+### Bug Fixes
+
+* **enhancement-agent:** robustify git repo cloning—auto-remove and reclone if not a valid git repository ([5ab882e](https://github.com/mikeholownych/mcp-server/commit/5ab882e5209311fdf128931d5f83f97df971c0c5))
+
 ## [1.3.2](https://github.com/mikeholownych/mcp-server/compare/v1.3.1...v1.3.2) (2025-07-05)
 
 
