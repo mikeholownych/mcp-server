@@ -1,0 +1,34 @@
+name: PR Release to Main
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create Pull Request from release to main
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: "release"
+          destination_branch: "main"
+          pr_title: "Automated PR: Merge release into main"
+          pr_body: |
+            This automated PR merges the latest changes from `release` into `main` to keep production up to date.
+            - Opened by GitHub Actions upon push to release.
+            - Review and merge to deploy updates to main.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "auto-pr, release, main-sync"
+          pr_assignee: "mikeholownych"

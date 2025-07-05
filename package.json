@@ -12,7 +12,7 @@
     "semantic-release": "^21.0.0"
   },
   "release": {
-    "branches": ["main"],
+    "branches": ["release"],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",

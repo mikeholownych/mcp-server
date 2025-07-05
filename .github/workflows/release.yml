@@ -4,7 +4,7 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - release
 
 # Grant the minimum scopes for tagging, releases & packages
 permissions:
@@ -33,6 +33,6 @@ jobs:
         run: npm ci
 
       - name: Semantic Release 🚀
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx semantic-release
