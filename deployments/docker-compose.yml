@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  mcp-server:
+    build: .
+    environment:
+      - GITHUB_APP_ID=${GITHUB_APP_ID}
+      - GITHUB_APP_PRIVATE_KEY=${GITHUB_APP_PRIVATE_KEY}
+      - GITHUB_APP_INSTALLATION_ID=${GITHUB_APP_INSTALLATION_ID}
+    # other configurations...
